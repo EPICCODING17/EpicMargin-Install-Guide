@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#2463eb">
+  <meta name="description" content="คู่มือติดตั้ง EpicMargin ตั้งแต่ศูนย์จนพร้อมใช้งานจริง">
+  <title>คู่มือติดตั้ง EpicMargin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#content">ข้ามไปยังเนื้อหา</a>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="EpicMargin Installation Guide">
+      <span class="brand-mark">฿</span>
+      <span><strong>EpicMargin</strong><small>คู่มือติดตั้งระบบ</small></span>
+    </a>
+    <div class="top-actions">
+      <button class="ghost" id="themeButton" type="button" aria-label="เปลี่ยนธีม">☾</button>
+      <button class="print-button" type="button" onclick="window.print()">พิมพ์ / บันทึก PDF</button>
+    </div>
+  </header>
+
+  <div class="reading-progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <div class="layout" id="top">
+    <aside class="sidebar" aria-label="สารบัญ">
+      <p class="eyebrow">สารบัญ</p>
+      <nav id="toc">
+        <a href="#intro">ภาพรวมระบบ</a>
+        <a href="#prepare">1. เตรียมเครื่อง</a>
+        <a href="#download">2. ดาวน์โหลดโค้ด</a>
+        <a href="#supabase">3. สร้าง Supabase</a>
+        <a href="#configure">4. ตั้งค่าการเชื่อมต่อ</a>
+        <a href="#cloudinary">5. ตั้งค่ารูปภาพ</a>
+        <a href="#run">6. เปิดระบบในเครื่อง</a>
+        <a href="#first-use">7. เริ่มใช้งานครั้งแรก</a>
+        <a href="#test">8. ทดสอบระบบ</a>
+        <a href="#deploy">9. นำขึ้นใช้งานจริง</a>
+        <a href="#troubleshoot">แก้ปัญหาที่พบบ่อย</a>
+        <a href="#checklist">เช็กลิสต์สุดท้าย</a>
+      </nav>
+      <div class="side-note"><strong>ใช้เวลาประมาณ</strong><span>30–60 นาที</span><small>ไม่รวมเวลารอสร้างบัญชี</small></div>
+    </aside>
+
+    <main id="content">
+      <section class="hero" id="intro">
+        <div class="hero-copy">
+          <span class="pill">ติดตั้งตั้งแต่ 0 → Production</span>
+          <h1>เปิดระบบคำนวณต้นทุน<br><em>EpicMargin</em> ให้พร้อมใช้งาน</h1>
+          <p>คู่มือภาษาไทยแบบเห็นภาพ สำหรับ Windows ครอบคลุมเครื่องมือพัฒนา ฐานข้อมูล ระบบสมาชิก รูปภาพ การทดสอบ และการเผยแพร่เว็บไซต์</p>
+          <div class="hero-actions">
+            <a class="primary" href="#prepare">เริ่มติดตั้ง</a>
+            <a class="secondary" href="#architecture">ดูเทคโนโลยีที่ใช้</a>
+          </div>
+          <div class="hero-stats">
+            <span><b>9</b> ตารางข้อมูล</span><span><b>12/12</b> tests ผ่าน</span><span><b>0</b> build step</span>
+          </div>
+        </div>
+        <figure class="phone hero-phone"><img src="assets/screenshots/02-overview.png" alt="หน้าภาพรวม EpicMargin"><figcaption>หน้าภาพรวมระบบจริง</figcaption></figure>
+      </section>
+
+      <section class="section" id="architecture">
+        <div class="section-head"><span class="step-icon">◎</span><div><p class="eyebrow">รู้จักระบบก่อนติดตั้ง</p><h2>เทคโนโลยีที่ใช้พัฒนา</h2></div></div>
+        <div class="stack-grid">
+          <article><span>01</span><h3>Vanilla Web</h3><p>HTML, CSS และ JavaScript แบบ ES Modules ไม่มี React/Vue และไม่ต้อง build</p></article>
+          <article><span>02</span><h3>Supabase</h3><p>PostgreSQL, Authentication และ Row Level Security แยกข้อมูลของแต่ละร้าน</p></article>
+          <article><span>03</span><h3>Cloudinary</h3><p>เก็บโลโก้ รูปวัตถุดิบ และรูปเมนูผ่าน unsigned upload</p></article>
+          <article><span>04</span><h3>Node + QA</h3><p>Node.js สำหรับ local server/tests และ qa-lab + Playwright สำหรับทดสอบหน้าจอจริง</p></article>
+        </div>
+        <div class="flow" aria-label="สถาปัตยกรรมระบบ">
+          <div><b>เบราว์เซอร์</b><small>web/</small></div><i>→</i><div><b>Supabase Auth</b><small>สมาชิก</small></div><i>→</i><div><b>PostgreSQL</b><small>ข้อมูลร้าน + RLS</small></div><i>+</i><div><b>Cloudinary</b><small>รูปภาพ</small></div>
+        </div>
+      </section>
+
+      <section class="section guide-step" id="prepare">
+        <div class="section-head"><span class="step-icon">1</span><div><p class="eyebrow">เตรียมเครื่อง Windows</p><h2>ติดตั้งเครื่องมือพื้นฐาน</h2></div></div>
+        <p class="lead">ติดตั้ง Node.js LTS และ Git ก่อน ส่วน VS Code เป็นตัวช่วยแก้โค้ดที่แนะนำแต่ไม่บังคับ</p>
+        <div class="tool-row">
+          <a href="https://nodejs.org/" target="_blank" rel="noreferrer"><b>Node.js LTS</b><small>รุ่น 18 ขึ้นไป</small></a>
+          <a href="https://git-scm.com/download/win" target="_blank" rel="noreferrer"><b>Git for Windows</b><small>ดาวน์โหลดโค้ดและ deploy</small></a>
+          <a href="https://code.visualstudio.com/" target="_blank" rel="noreferrer"><b>VS Code</b><small>แนะนำสำหรับแก้ไฟล์</small></a>
+        </div>
+        <div class="code-card"><div class="code-title"><span>PowerShell — ตรวจสอบหลังติดตั้ง</span><button class="copy" type="button">คัดลอก</button></div><pre><code>node --version
+npm --version
+git --version</code></pre></div>
+        <aside class="callout info"><b>ถ้าคำสั่งไม่ทำงาน</b><span>ให้ปิด PowerShell แล้วเปิดใหม่ เพื่อโหลด PATH หลังติดตั้งโปรแกรม</span></aside>
+      </section>
+
+      <section class="section guide-step" id="download">
+        <div class="section-head"><span class="step-icon">2</span><div><p class="eyebrow">รับซอร์สโค้ด</p><h2>ดาวน์โหลดและติดตั้ง dependency</h2></div></div>
+        <div class="code-card"><div class="code-title"><span>PowerShell</span><button class="copy" type="button">คัดลอก</button></div><pre><code>cd $HOME\Downloads
+git clone https://github.com/EPICCODING17/EpicMargin.git
+cd EpicMargin
+npm install
+npm test</code></pre></div>
+        <div class="success-strip"><span>✓</span><div><b>ผลที่ถูกต้อง</b><p>unit tests ผ่าน 12 รายการ และไม่มี test ล้มเหลว</p></div></div>
+        <div class="file-tree"><b>โครงสร้างสำคัญ</b><pre>EpicMargin/
+├─ web/              เว็บ production
+├─ db/schema.sql     ฐานข้อมูล + RLS
+├─ scripts/          server และเครื่องมือ
+├─ test/             unit tests
+└─ package.json</pre></div>
+      </section>
+
+      <section class="section guide-step" id="supabase">
+        <div class="section-head"><span class="step-icon">3</span><div><p class="eyebrow">Backend และสมาชิก</p><h2>สร้าง Supabase Project</h2></div></div>
+        <ol class="timeline">
+          <li><span>1</span><div><b>สร้าง Project</b><p>เข้า <a href="https://supabase.com" target="_blank" rel="noreferrer">supabase.com</a> กด New project เลือก region Singapore และตั้ง Database Password</p></div></li>
+          <li><span>2</span><div><b>สร้างตาราง</b><p>เปิด SQL Editor → New query แล้วคัดลอกไฟล์ <code>db/schema.sql</code> ทั้งไฟล์ไป Run</p></div></li>
+          <li><span>3</span><div><b>ตั้งค่า Login</b><p>Authentication → Providers → Email ช่วงพัฒนาปิด Confirm email ได้ แต่ production ควรเปิดพร้อม Custom SMTP</p></div></li>
+          <li><span>4</span><div><b>ตั้ง URL</b><p>Authentication → URL Configuration เพิ่ม <code>http://localhost:8765/**</code> และ URL production</p></div></li>
+          <li><span>5</span><div><b>คัดลอก API settings</b><p>Project Settings → API เก็บ Project URL และ publishable/anon key</p></div></li>
+        </ol>
+        <div class="database-grid">
+          <span>shops</span><span>ingredients</span><span>sub_recipes</span><span>sub_recipe_items</span><span>products</span><span>product_items</span><span>channels</span><span>categories</span><span>pricing</span>
+        </div>
+        <aside class="callout danger"><b>ห้ามใส่ secret key ในหน้าเว็บ</b><span>ใช้เฉพาะ publishable/anon key เท่านั้น ความปลอดภัยของข้อมูลมาจาก RLS</span></aside>
+      </section>
+
+      <section class="section guide-step" id="configure">
+        <div class="section-head"><span class="step-icon">4</span><div><p class="eyebrow">เชื่อมต่อระบบ</p><h2>ตั้งค่า <code>web/config.js</code></h2></div></div>
+        <div class="split">
+          <div>
+            <p class="lead">นำ Project URL และ publishable key ของ Supabase มาแทนค่าตัวอย่าง</p>
+            <div class="code-card"><div class="code-title"><span>web/config.js</span><button class="copy" type="button">คัดลอก</button></div><pre><code>export const SUPABASE_URL =
+  'https://XXXXXXXX.supabase.co';
+
+export const SUPABASE_ANON_KEY =
+  'sb_publishable_XXXXXXXX';</code></pre></div>
+            <aside class="callout warning"><b>ติดตั้งให้ลูกค้าใหม่</b><span>ต้องเปลี่ยน URL และ key เป็น Supabase ของลูกค้าทุกครั้ง เพื่อไม่ให้ข้อมูลปนกัน</span></aside>
+          </div>
+          <figure class="phone"><img src="assets/screenshots/01-login.png" alt="หน้าเข้าสู่ระบบ EpicMargin"><figcaption>เมื่อตั้งค่าถูกต้องจะเห็นหน้า Login</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="section guide-step" id="cloudinary">
+        <div class="section-head"><span class="step-icon">5</span><div><p class="eyebrow">รูปภาพ — เลือกทำได้</p><h2>ตั้งค่า Cloudinary</h2></div></div>
+        <div class="split reverse">
+          <figure class="phone"><img src="assets/screenshots/09-settings-shop.png" alt="หน้าตั้งค่าร้านและโลโก้"><figcaption>หน้าอัปโหลดโลโก้และตั้งค่าร้าน</figcaption></figure>
+          <div>
+            <ol class="numbered">
+              <li>สมัครบัญชีที่ <a href="https://cloudinary.com" target="_blank" rel="noreferrer">cloudinary.com</a></li>
+              <li>Settings → Upload → Upload presets</li>
+              <li>สร้าง preset แบบ <b>Unsigned</b></li>
+              <li>คัดลอก Cloud name และ Upload preset ลง `web/config.js`</li>
+            </ol>
+            <div class="code-card"><div class="code-title"><span>web/config.js</span><button class="copy" type="button">คัดลอก</button></div><pre><code>export const CLOUDINARY = {
+  cloudName: 'YOUR_CLOUD_NAME',
+  uploadPreset: 'YOUR_UNSIGNED_PRESET',
+};</code></pre></div>
+            <p class="muted">ไม่ตั้งค่าก็ใช้งานได้ ระบบจะแสดง emoji แทนรูป</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section guide-step" id="run">
+        <div class="section-head"><span class="step-icon">6</span><div><p class="eyebrow">Local development</p><h2>เปิดระบบในเครื่อง</h2></div></div>
+        <div class="code-card large"><div class="code-title"><span>PowerShell — ที่โฟลเดอร์ EpicMargin</span><button class="copy" type="button">คัดลอก</button></div><pre><code>node scripts/serve-web.mjs</code></pre></div>
+        <a class="launch-card" href="http://localhost:8765" target="_blank"><span>เปิดเว็บ</span><b>http://localhost:8765</b><i>↗</i></a>
+        <aside class="callout info"><b>อย่าดับเบิลคลิก index.html</b><span>เว็บใช้ ES Modules จึงต้องเปิดผ่าน HTTP server เสมอ หยุด server ด้วย Ctrl+C</span></aside>
+      </section>
+
+      <section class="section guide-step" id="first-use">
+        <div class="section-head"><span class="step-icon">7</span><div><p class="eyebrow">ตั้งค่าร้าน</p><h2>เริ่มใช้งานครั้งแรก</h2></div></div>
+        <div class="feature-gallery">
+          <figure><img src="assets/screenshots/03-ingredients.png" alt="หน้าวัตถุดิบ"><figcaption><b>1. วัตถุดิบ</b><span>ราคาซื้อและหน่วยฐาน</span></figcaption></figure>
+          <figure><img src="assets/screenshots/04-subrecipes.png" alt="หน้าสูตรกลาง"><figcaption><b>2. สูตรกลาง</b><span>สูตรซ้อนและ yield</span></figcaption></figure>
+          <figure><img src="assets/screenshots/05-menus.png" alt="หน้าเมนู"><figcaption><b>3. เมนู</b><span>ส่วนผสมและต้นทุน</span></figcaption></figure>
+          <figure><img src="assets/screenshots/07-price-table.png" alt="หน้าราคาและกำไร"><figcaption><b>4. ราคา</b><span>กำไรหลังหัก GP</span></figcaption></figure>
+        </div>
+        <div class="order-line"><span>สมัครสมาชิก</span><i>→</i><span>สร้างร้าน</span><i>→</i><span>วัตถุดิบ</span><i>→</i><span>สูตร</span><i>→</i><span>เมนู</span><i>→</i><span>ราคา</span></div>
+      </section>
+
+      <section class="section guide-step" id="test">
+        <div class="section-head"><span class="step-icon">8</span><div><p class="eyebrow">Quality assurance</p><h2>ทดสอบก่อนส่งมอบ</h2></div></div>
+        <div class="test-grid">
+          <article><span>✓</span><h3>Unit test</h3><p>ตรวจสูตรต้นทุน, สูตรซ้อน, GP และ Auto Price</p><div class="code-card compact"><pre><code>npm test</code></pre></div></article>
+          <article><span>◉</span><h3>Browser QA</h3><p>ใช้ qa-lab คลิกจริง แคปหน้าจอ และจับ console/HTTP errors</p><div class="code-card compact"><pre><code>qa-lab projects/epicmargin.app.test.mjs</code></pre></div></article>
+        </div>
+        <div class="split">
+          <div class="checks">
+            <label><input type="checkbox"> สมัครและล็อกอินได้</label>
+            <label><input type="checkbox"> เพิ่ม/แก้/ลบข้อมูลได้</label>
+            <label><input type="checkbox"> รีเฟรชแล้วข้อมูลยังอยู่</label>
+            <label><input type="checkbox"> GP และราคา Auto คำนวณถูก</label>
+            <label><input type="checkbox"> บัญชีอื่นไม่เห็นข้อมูลร้านนี้</label>
+            <label><input type="checkbox"> ไม่มี console/JS/HTTP error</label>
+          </div>
+          <figure class="phone"><img src="assets/screenshots/08-price-auto.png" alt="หน้าแนะนำราคาอัตโนมัติ"><figcaption>ตรวจราคา Auto และกำไรแต่ละช่องทาง</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="section guide-step" id="deploy">
+        <div class="section-head"><span class="step-icon">9</span><div><p class="eyebrow">Production</p><h2>นำเว็บขึ้น GitHub Pages</h2></div></div>
+        <div class="code-card"><div class="code-title"><span>Deploy เฉพาะโฟลเดอร์ web/</span><button class="copy" type="button">คัดลอก</button></div><pre><code>git add .
+git commit -m "Deploy EpicMargin"
+git push origin main
+git subtree push --prefix web origin gh-pages</code></pre></div>
+        <ol class="numbered">
+          <li>GitHub repository → Settings → Pages</li>
+          <li>Source = Deploy from a branch</li>
+          <li>Branch = <code>gh-pages</code> และ folder = <code>/(root)</code></li>
+          <li>นำ URL ที่ได้กลับไปใส่ Supabase Site URL และ Redirect URLs</li>
+        </ol>
+        <aside class="callout success"><b>ไม่ต้องมี Node server บน production</b><span>EpicMargin เป็น static web ทั้งหมด นำไฟล์ใน `web/` ขึ้นโฮสต์ได้โดยตรง</span></aside>
+      </section>
+
+      <section class="section" id="troubleshoot">
+        <div class="section-head"><span class="step-icon">?</span><div><p class="eyebrow">Troubleshooting</p><h2>แก้ปัญหาที่พบบ่อย</h2></div></div>
+        <div class="faq">
+          <details><summary>เปิดแล้วเป็นหน้าขาว</summary><p>อย่าเปิด `index.html` โดยตรง ให้รัน `node scripts/serve-web.mjs` และเปิด `http://localhost:8765`</p></details>
+          <details><summary>ล็อกอินได้แต่แอปโหลดไม่ครบ</summary><p>รัน `db/schema.sql` รุ่นล่าสุดอีกครั้ง ต้องมีครบ 9 ตาราง โดยเฉพาะ `categories` และ RLS policy</p></details>
+          <details><summary>ขึ้น Failed to fetch</summary><p>ตรวจ Project URL, publishable key, อินเทอร์เน็ต และ Network tab ใน Developer Tools</p></details>
+          <details><summary>สมัครแล้วเข้าไม่ได้</summary><p>ถ้าเปิด Confirm email ต้องยืนยันอีเมลก่อน ตรวจ Spam และการตั้งค่า SMTP</p></details>
+          <details><summary>ขึ้น row-level security policy</summary><p>ตรวจว่าผู้ใช้ล็อกอินแล้ว และรัน schema ที่มี RLS policy ครบทุกตาราง</p></details>
+          <details><summary>อัปโหลดรูปไม่ได้</summary><p>ตรวจ Cloud name และ Upload preset โดย preset ต้องเป็น Unsigned</p></details>
+        </div>
+      </section>
+
+      <section class="section final-check" id="checklist">
+        <div class="section-head"><span class="step-icon">✓</span><div><p class="eyebrow">พร้อมใช้งานจริง</p><h2>เช็กลิสต์ก่อนส่งมอบ</h2></div></div>
+        <div class="checks two-col">
+          <label><input type="checkbox"> Tests ผ่าน 12/12</label>
+          <label><input type="checkbox"> Supabase ครบ 9 ตาราง</label>
+          <label><input type="checkbox"> เปิด RLS ครบทุกตาราง</label>
+          <label><input type="checkbox"> Config ชี้ project ถูกตัว</label>
+          <label><input type="checkbox"> ไม่มี secret key ในเว็บ</label>
+          <label><input type="checkbox"> Site/Redirect URL ถูกต้อง</label>
+          <label><input type="checkbox"> Confirm email + SMTP พร้อม</label>
+          <label><input type="checkbox"> ทดสอบแยกข้อมูล 2 บัญชี</label>
+          <label><input type="checkbox"> ทดสอบมือถือและคอมพิวเตอร์</label>
+          <label><input type="checkbox"> Browser QA ไม่มี error</label>
+        </div>
+        <div class="finish"><span>฿</span><div><h3>EpicMargin พร้อมเปิดใช้งาน</h3><p>รู้ต้นทุนจริง ตั้งราคาขายไม่พลาด ทั้งหน้าร้านและเดลิเวอรี่</p></div></div>
+      </section>
+    </main>
+  </div>
+
+  <footer><div><b>EpicMargin Installation Guide</b><span>อ้างอิงจากระบบจริงและคู่มือ SETUP_FROM_ZERO.md</span></div><a href="#top">กลับขึ้นด้านบน ↑</a></footer>
+  <script src="app.js"></script>
+</body>
+</html>
