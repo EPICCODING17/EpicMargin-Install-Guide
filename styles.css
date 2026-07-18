@@ -4,3 +4,15 @@ body.dark{--ink:#eef4ff;--muted:#aebad0;--line:#34425b;--soft:#1a263c;--card:#11
 @media(max-width:1000px){.layout{grid-template-columns:1fr}.sidebar{display:none}.hero{padding:42px;grid-template-columns:1fr .7fr}.stack-grid{grid-template-columns:1fr 1fr}.feature-gallery{grid-template-columns:1fr 1fr}}
 @media(max-width:720px){html{scroll-padding-top:76px}.topbar{height:64px;padding:0 14px}.reading-progress{top:64px}.brand small{display:none}.print-button{display:none}.layout{padding:16px 12px 45px}.hero,.section{border-radius:20px}.hero{padding:31px 22px;grid-template-columns:1fr;text-align:left}.hero-phone{transform:none}.hero-phone img{width:250px}.hero h1{font-size:37px}.hero-stats{gap:13px}.section{padding:29px 20px;margin-top:16px}.section-head{align-items:flex-start}.section-head h2{font-size:27px}.step-icon{width:45px;height:45px;border-radius:14px}.stack-grid,.tool-row,.database-grid,.split,.split.reverse,.test-grid,.two-col{grid-template-columns:1fr}.flow{flex-wrap:wrap}.feature-gallery{display:flex;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:8px}.feature-gallery figure{min-width:220px;scroll-snap-align:start}.phone img{width:270px}.split .phone{order:-1}.hero-actions{flex-direction:column}.hero-actions a{text-align:center}.top-actions{gap:5px}.ghost{width:38px}.code-card pre{font-size:11px}.order-line i{display:none}footer{padding:20px;flex-direction:column;gap:12px}}
 @media print{.topbar,.reading-progress,.sidebar,.hero-actions,.copy,footer{display:none!important}.layout{display:block;padding:0}.hero,.section{box-shadow:none;break-inside:avoid;border-color:#bbb}.section{margin-top:12px}.hero{min-height:auto}.feature-gallery img{max-height:360px}.checks input{appearance:none;border:1px solid #555}}
+/* dark-mode fixes: elements with hard-coded light backgrounds */
+body.dark .skip{background:#111b2e;color:var(--ink);border:1px solid var(--line)}
+body.dark .pill{background:#17294a;border-color:#2b4472;color:#8fb4ff}
+body.dark .callout.info{background:#132a4d}
+body.dark .callout.warning{background:#3a2f10}
+body.dark .callout.danger{background:#3a1720}
+body.dark .callout.success{background:#0f2e22}
+body.dark .success-strip{background:#0f2e22}
+body.dark .timeline li>span{background:#17294a;color:#8fb4ff}
+body.dark .timeline li:not(:last-child):before{background:#2b3b57}
+body.dark .launch-card{background:#132a4d;border-color:#2b4472}
+body.dark .launch-card b{color:#8fb4ff}
