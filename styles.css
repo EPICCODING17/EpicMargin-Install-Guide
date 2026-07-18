@@ -6,6 +6,7 @@ body.dark{--ink:#eef4ff;--muted:#aebad0;--line:#34425b;--soft:#1a263c;--card:#11
 @media print{.topbar,.reading-progress,.sidebar,.hero-actions,.copy,footer{display:none!important}.layout{display:block;padding:0}.hero,.section{box-shadow:none;break-inside:avoid;border-color:#bbb}.section{margin-top:12px}.hero{min-height:auto}.feature-gallery img{max-height:360px}.checks input{appearance:none;border:1px solid #555}}
 /* dark-mode fixes: elements with hard-coded light backgrounds */
 body.dark .skip{background:#111b2e;color:var(--ink);border:1px solid var(--line)}
+body.dark .print-button{background:var(--blue);color:#fff}
 body.dark .pill{background:#17294a;border-color:#2b4472;color:#8fb4ff}
 body.dark .callout.info{background:#132a4d}
 body.dark .callout.warning{background:#3a2f10}
